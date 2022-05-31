@@ -1,0 +1,16 @@
+html {
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+}
+#info {
+	position: absolute;
+	top: 10%;
+    right: 40%;
+	width: 100%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+	color: white;
+}
