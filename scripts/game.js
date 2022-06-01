@@ -14,14 +14,18 @@ class Game {
     //animation variables
     fluct = true;
     supUp = true;
-    armUp = true;
+    rightArmUp = true;
+    rightArmDown=false;
+    leftArmUp = true;
+    leftArmDown=false;
     cape = null;
     shake = false;
     shake_count = 20;
     rightArm = null;
+    leftArm=null;
   
     constructor(scene, camera) {
-      this.difficulty = false;
+      
       this.speedZ = 20; //objects speed
       this.time = 0;
       this.clock = new THREE.Clock();
@@ -69,6 +73,20 @@ class Game {
             this.supermanBB.setFromObject(this.superman)
           }
           break;
+        case 'r':
+          
+          if(this.rightArm.rotation.z < 1.03) this.rightArmUp=true
+          else if (this.rightArm.rotation.z>4) this.rightArmDown=true;
+          
+        break;
+        case 'l':
+          console.log(this.leftArm.rotation.z)
+          if(this.leftArm.rotation.z >- 1.05) this.leftArmUp=true
+          else if (this.leftArm.rotation.z<-4) this.leftArmDown=true;
+        break;
+
+        // this.moon.scale.set(30, 30, 30);
+
       }
   
     }
@@ -130,6 +148,7 @@ class Game {
         this.superman = data;
         this.cape = this.superman.getObjectByName("Cape1_052")
         this.rightArm = this.superman.getObjectByName("RBicep_030")
+        this.leftArm = this.superman.getObjectByName("LBicep_07")
   
         this.superman.scale.set(0.01, 0.01, 0.01)
         this.superman.rotateY(180 * Math.PI / 180);
@@ -266,16 +285,53 @@ class Game {
         else this.supUp = false
       }
       //___________________
-      //raise arm
-      if (this.armUp) {
+      //right arm controls
+      //raise arm 
+      if (this.rightArmUp ) {
         if (this.rightArm.rotation.z <= 4) {
           this.rightArm.rotation.z += 0.1;
           this.rightArm.rotation.x -= 0.03;
         }
-        else this.armUp = false;
+        else{
+           this.rightArmUp = false;
+        }
       }
-      //______________
-  
+      //down arm
+      if (this.rightArmDown) {
+        if (this.rightArm.rotation.z > 1.1) {
+          this.rightArm.rotation.z -= 0.1;
+          this.rightArm.rotation.x += 0.03;
+        }
+        else {
+          this.rightArmDown = false;
+          
+        }
+      }
+      //left arm controls
+      //raise arm 
+      if (this.leftArmUp ) {
+        if (this.leftArm.rotation.z >= -4) {
+          this.leftArm.rotation.z -= 0.1;
+          this.leftArm.rotation.x -= 0.03;
+        }
+        else{
+           this.leftArmUp = false;
+        }
+      }
+      //down arm
+      if (this.leftArmDown) {
+        if (this.leftArm.rotation.z < -1.1) {
+          this.leftArm.rotation.z += 0.1;
+          this.leftArm.rotation.x += 0.03;
+        }
+        else {
+          this.leftArmDown = false;
+          
+        }
+      }
+
+
+
       //fluctuate
       if (this.fluct) {
         if (this.superman.position.y <= 0.05) {
@@ -292,6 +348,10 @@ class Game {
         else this.fluct = true;
       }
       //_____________________________
+
+
+
+      
       //shake animation
       if (this.shake && this.shake_count > 0) {
         if (this.shake_count % 2 == 0) {
@@ -317,9 +377,7 @@ class Game {
       */
     }
   
-    increaseDifficulty() {
-      this.difficulty = true;
-    }
+
   
     checkGameOver() {
       if (this.divHealth.value < 10) {

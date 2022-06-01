@@ -14,3 +14,13 @@ html {
 	display:block;
 	color: white;
 }
+#controls {
+	position: absolute;
+	top: 10%;
+    left: 30%;
+	width: 100%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+	color: white;
+}
