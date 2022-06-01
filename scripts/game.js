@@ -84,13 +84,13 @@ class Game {
 
         break;
       case 'l':
-        console.log(this.leftArm.rotation.z)
+  
         if (this.leftArm.rotation.z > - 1.05) this.leftArmUp = true
         else if (this.leftArm.rotation.z < -4) this.leftArmDown = true;
         break;
 
       case 'ArrowUp':
-        if (this.moonSize > 3) {
+        if (this.moonSize > 15) {
           this.moonSize--;
           this.moonY++;
           this.moon.scale.set(this.moonSize, this.moonSize, this.moonSize);
@@ -107,19 +107,7 @@ class Game {
           this.moon.position.y = this.moonY;
         }
         break
-        
-      case 'm':
-        if (this.moon.position.y == -31) {
-          this.moon.scale.set(3, 3, 3);
-          this.moon.position.z = -3;
-          this.moon.position.y = -5;
-        }
-        else {
-          this.moon.scale.set(30, 30, 30);
-          this.moon.position.z = -3;
-          this.moon.position.y = -31;
-        }
-        break;
+ 
 
     }
 
@@ -273,13 +261,12 @@ class Game {
       if (this.supermanBB.intersectsBox(element) && element != this.collisionTemp) {
         this.collisionTemp = element;
         if (element.userData.type === 'obstacle') {
-          console.log('obstacle collision')
+          
           this.health -= 10;
           this.divHealth.value = this.health;
           this.shake = true;
         }
         else {
-          console.log('bonus collision')
           this.score += 10;
           this.divScore.innerHTML = "Score: " + this.score;
         }
@@ -300,7 +287,7 @@ class Game {
           // console.log((xhr.loaded / xhr.total) * 100 + "% loaded")
         },
         function (error) {
-          console.log("An error happened");
+          // console.log("An error happened");
           reject(error);
         }
       )
