@@ -222,7 +222,7 @@ class Game {
   }
 
   setupObstacle(obj, refXPos = 0, refZPos = 0) {
-    let scale = this.randomFloat(0.3, 0.5)
+    let scale = this.randomFloat(0.5, 0.8)
     obj.scale.set(scale, scale, scale)
     obj.position.set(
       refXPos + this.randomFloat(-3, 3),

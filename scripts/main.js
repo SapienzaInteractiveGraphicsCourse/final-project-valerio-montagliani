@@ -1,7 +1,11 @@
 var difficulty=30
 window.onload = () => {
-    document.body.innerHTML='<button id=\'start\'>Start</button>';
-    document.getElementById('start').onclick = function(){startGame()};
+    document.body.innerHTML=
+    '<button id=\'start\'>Start</button>'+
+    '<br>'+
+    '<div> Select Difficulty </div><input id="difficulty" type="range" min="1" max="100" value="30" step =1></input><br>'
+   
+    document.getElementById('start').onclick = function(){ difficulty = document.getElementById('difficulty').value;;startGame()};
 };
 
 function startGame(){
