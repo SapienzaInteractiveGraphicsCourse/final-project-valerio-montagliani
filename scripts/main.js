@@ -3,7 +3,7 @@ window.onload = () => {
     document.body.innerHTML=
     '<button id=\'start\'>Start</button>'+
     '<br>'+
-    '<div> Select Difficulty </div><input id="difficulty" type="range" min="1" max="60" value="30" step =1></input><br>'
+    '<div> Select Difficulty </div><input id="difficulty" type="range" min="15" max="45" value="20" step =1></input><br>'
    
     document.getElementById('start').onclick = function(){ difficulty = document.getElementById('difficulty').value;;startGame()};
 };
@@ -15,7 +15,7 @@ function startGame(){
         '<div class="divider"></div>'+
         '<div id="score">Score: </div>'+
         '<div id="distance">Distance: </div>'+
-        '<div> Health </div><input id="health" type="range" min="0" max="100" value="100" disabled></input><br>'+
+        '<div> Health: </div><input id="health" type="range" min="0" max="100" value="100" disabled></input><br>'+
     '</div>'+
     '<div id="controls">'+
         '<div id="title">Commands</div>'+
@@ -23,16 +23,17 @@ function startGame(){
         '<div>up/down arrows change moon distance </div>'+
         '<div>l/r move arms </div>'+
         '<div>p to pause the game</div>'+
+        '<div>m speed up moon rotation</div>'+
     '</div>'
     
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    //___________
+    
     document.body.appendChild(renderer.domElement);
     //3d scene
-    const game = new Game(scene,camera, difficulty);
+    const game = new Game(scene, camera, difficulty);
     //__________
     //animate loop
     function animate() {

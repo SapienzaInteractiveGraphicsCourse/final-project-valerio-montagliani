@@ -1,7 +1,7 @@
 
 class Game {
-  OBSTACLE_BUFF = new THREE.BoxBufferGeometry(1, 1, 1);
-  OBSTACLE_MAT = new THREE.MeshBasicMaterial({ color: 0x08FF08 });
+  KRYPTONITE_BUFF = new THREE.BoxBufferGeometry(1, 1, 1);
+  KRYPTONITE_MAT = new THREE.MeshBasicMaterial({ color: 0x08FF08 });
   BONUS_BUFF = new THREE.SphereBufferGeometry(1, 12, 12);
   BONUS_MAT = new THREE.MeshBasicMaterial({ color: 0xFFFF00 });
 
@@ -25,9 +25,11 @@ class Game {
   shake_count = 20;
   rightArm = null;
   leftArm = null;
-
+  
+  //moon animation variables
   moonSize = 30;
   moonY = -31;
+  moonRotationSpeed = 0.001;
 
   constructor(scene, camera, difficulty) {
 
@@ -52,20 +54,21 @@ class Game {
   }
 
   update() {
-    if (this.moonReady && this.supermanReady) {
-      if (!this.pause) {
-        this.checkCollisions();
-        this.checkGameOver()
-        this.time += this.clock.getDelta();
-        this.updateObjects();
-        this.animate();
-        this.distance += 1;
-        this.divDistance.innerText = "Distance: " + this.distance
-      }
+
+    if (this.moonReady && this.supermanReady && !this.pause) {
+      this.checkCollisions();
+      this.checkGameOver()
+      this.time += this.clock.getDelta()
+
+      this.updateObjects();
+      this.animate();
+      this.distance += 1;
+      this.divDistance.innerText = "Distance: " + this.distance;
     }
   }
 
   keydown(event) {
+
     switch (event.key) {
       case 'ArrowLeft':
 
@@ -74,18 +77,21 @@ class Game {
           this.supermanBB.setFromObject(this.superman)
         }
         break;
+
       case 'ArrowRight':
+
         if (this.superman.position.x < 3) {
           this.superman.translateX(-0.2);
           this.supermanBB.setFromObject(this.superman)
         }
         break;
+
       case 'r':
 
         if (this.rightArm.rotation.z < 1.03) this.rightArmUp = true
         else if (this.rightArm.rotation.z > 4) this.rightArmDown = true;
-
         break;
+
       case 'l':
 
         if (this.leftArm.rotation.z > - 1.05) this.leftArmUp = true
@@ -93,14 +99,17 @@ class Game {
         break;
 
       case 'ArrowUp':
-        if (this.moonSize > 15) {
+
+        if (this.moonSize > 10) {
           this.moonSize--;
           this.moonY++;
           this.moon.scale.set(this.moonSize, this.moonSize, this.moonSize);
           this.moon.position.y = this.moonY;
         }
         break;
+
       case 'ArrowDown':
+
         if (this.moonSize < 31) {
           this.moonSize++;
           this.moonY--;
@@ -108,33 +117,41 @@ class Game {
           this.moon.position.y = this.moonY;
         }
         break
+
       case 'p':
+
         this.pause = !this.pause;
+        break
+
+      case 'm':
+
+        this.moonRotationSpeed += 0.001;
         break
     }
 
   }
 
   updateObjects() {
-    //TODO separate obstacles and bonuses
+    //TODO separate kryptonites and bonuses
     //TOD0 remove 0 inside params
 
-    this.objectsParent.position.z = this.speedZ * this.time; //move objects 
+    this.objectsGroup.position.z = this.speedZ * this.time; //move objects 
     var count = 0;//count objects inside bounding box array 
-    this.objectsParent.traverse((child) => { //iterate over all the objects
+    this.objectsGroup.traverse((child) => { //iterate over all the objects
       if (child instanceof THREE.Mesh) {
 
-        this.objectsParentBB[count].setFromObject(child);//update boundingbox
+        this.objectsBB[count].setFromObject(child);//update boundingbox
         count++;
 
-        const childZPos = child.position.z + this.objectsParent.position.z;
+        const childZPos = child.position.z + this.objectsGroup.position.z;
+
         if (childZPos > 0) {
-          const params = [child, 0, -this.objectsParent.position.z]; //reset objects position (0 is temporary)
-          if (child.userData.type === 'obstacle') {
-            this.setupObstacle(...params);
+          const params = [child, 0, -this.objectsGroup.position.z]; //reset objects position (0 is temporary)
+          if (child.userData.type === 'kryptonite') {
+            this.setKryptonite(...params);
           }
           else {//it's a bonus
-            this.setupBonus(...params);
+            this.setBonus(...params);
           }
         }
       }
@@ -188,38 +205,41 @@ class Game {
       this.supermanReady = true;
     })
 
-    this.objectsParent = new THREE.Group();
-    this.objectsParentBB = new Array();
+    this.objectsGroup = new THREE.Group();
+    this.objectsBB = new Array();
 
-    scene.add(this.objectsParent);
+    scene.add(this.objectsGroup);
 
     for (let i = 0; i < 5; i++) {
-      this.spawnObstacle();
+      this.createKryptonite();
     }
 
     for (let i = 0; i < 5; i++) {
-      this.spawnBonus();
+      this.createBonus();
     }
 
     camera.position.set(0, 1.5, 3);
   }
 
-  spawnObstacle() {
-    const obj = new THREE.Mesh(this.OBSTACLE_BUFF, this.OBSTACLE_MAT);
+  createKryptonite() {
 
-    obj.applyMatrix(new THREE.Matrix4().makeRotationZ(Math.PI / 4));
+    const obj = new THREE.Mesh(this.KRYPTONITE_BUFF, this.KRYPTONITE_MAT);
+
+    obj.applyMatrix(new THREE.Matrix4().makeRotationZ(Math.PI / 4));//model cube like a 'gem' of kryptonite
     obj.applyMatrix(new THREE.Matrix4().makeScale(1, 2, 1));
-    this.setupObstacle(obj)
 
-    const obstacleBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3()).setFromObject(obj);
-    obstacleBB.userData = { type: 'obstacle' };
-    this.objectsParentBB.push(obstacleBB);
+    this.setKryptonite(obj)
 
-    this.objectsParent.add(obj);
-    obj.userData = { type: 'obstacle' };
+    const kryptoniteBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3()).setFromObject(obj);
+    kryptoniteBB.userData = { type: 'kryptonite' };
+    this.objectsBB.push(kryptoniteBB);
+
+    this.objectsGroup.add(obj);
+    obj.userData = { type: 'kryptonite' };
   }
 
-  setupObstacle(obj, refXPos = 0, refZPos = 0) {
+  setKryptonite(obj, refXPos = 0, refZPos = 0) {
+
     let scale = this.randomFloat(0.3, 0.8)
     obj.scale.set(scale, scale, scale)
     obj.position.set(
@@ -229,18 +249,21 @@ class Game {
     );
 
   }
-  spawnBonus() {
+
+  createBonus() {
+
     const obj = new THREE.Mesh(this.BONUS_BUFF, this.BONUS_MAT);
-    this.setupBonus(obj);
+    this.setBonus(obj);
     const bonusBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3()).setFromObject(obj);
     bonusBB.userData = { type: 'bonus' };
-    this.objectsParentBB.push(bonusBB);
+    this.objectsBB.push(bonusBB);
 
-    this.objectsParent.add(obj);
+    this.objectsGroup.add(obj);
     obj.userData = { type: 'bonus' };
   }
 
-  setupBonus(obj, refXPos = 0, refZPos = 0) {
+  setBonus(obj, refXPos = 0, refZPos = 0) {
+
     const size = this.randomFloat(0.3, 0.5);
     obj.scale.set(size, size, size);
     obj.position.set(
@@ -252,16 +275,18 @@ class Game {
 
   randomFloat(min, max) { return Math.random() * (max - min) + min; }
   randomInt(min, max) {
+
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   checkCollisions() {
-    this.objectsParentBB.forEach(element => {
+
+    this.objectsBB.forEach(element => {
       if (this.supermanBB.intersectsBox(element) && element != this.collisionTemp) {
         this.collisionTemp = element;
-        if (element.userData.type === 'obstacle') {
+        if (element.userData.type === 'kryptonite') {
           this.health -= 10;
           this.divHealth.value = this.health;
           this.shake = true;
@@ -276,6 +301,7 @@ class Game {
 
 
   modelLoad(gltfFile) {
+
     const myPromise = new Promise((resolve, reject) => {
       const gltfLoader = new THREE.GLTFLoader();
       gltfLoader.load(
@@ -295,10 +321,10 @@ class Game {
     return myPromise;
   }
 
-
   animate() {
-    this.moon.rotateX(+0.001);
-    
+
+    this.moon.rotateX(this.moonRotationSpeed);
+
     // superman go from bottom to starting point
     if (this.supUp) {
       if (this.superman.position.y <= 0)
@@ -399,6 +425,7 @@ class Game {
   }
 
   checkGameOver() {
+
     if (this.divHealth.value < 10) {
       alert("Game Over` \npress ok to reload");
       this.divHealth.value = 10;
