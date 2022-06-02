@@ -25,7 +25,7 @@ class Game {
   shake_count = 20;
   rightArm = null;
   leftArm = null;
-  
+
   //moon animation variables
   moonSize = 30;
   moonY = -31;
