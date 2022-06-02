@@ -1,4 +1,7 @@
+var difficulty=30
 window.onload = () => {
+
+    // document.body.innerHTML='ciao'
     //basic 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -9,14 +12,12 @@ window.onload = () => {
     document.body.appendChild(renderer.domElement);
 
     //3d scene
-    const game = new Game(scene,camera);
+    const game = new Game(scene,camera, difficulty);
     //__________
     //animate loop
     function animate() {
         requestAnimationFrame( animate );
-        
         game.update();
-        
         renderer.render( scene, camera );
     }
     animate()

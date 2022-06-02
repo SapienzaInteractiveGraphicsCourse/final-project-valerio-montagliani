@@ -7,6 +7,8 @@ class Game {
 
   collisionTemp = null;
 
+  pause = false;
+
   //scene is ready
   supermanReady = false;
   moonReady = false;
@@ -28,9 +30,9 @@ class Game {
   moonSize = 30;
   moonY = -31;
 
-  constructor(scene, camera) {
+  constructor(scene, camera, difficulty) {
 
-    this.speedZ = 20; //objects speed
+    this.speedZ = difficulty; //objects speed
     this.time = 0;
     this.clock = new THREE.Clock();
     this.initializeScene(scene, camera);
@@ -52,13 +54,15 @@ class Game {
 
   update() {
     if (this.moonReady && this.supermanReady) {
-      this.time += this.clock.getDelta();
-      this.updateObjects();
-      this.checkCollisions();
-      this.checkGameOver()
-      this.animate();
-      this.distance += 1;
-      this.divDistance.innerText = "Distance: " + this.distance
+      if (!this.pause) {
+        this.checkCollisions();
+        this.checkGameOver()
+        this.time += this.clock.getDelta();
+        this.updateObjects();
+        this.animate();
+        this.distance += 1;
+        this.divDistance.innerText = "Distance: " + this.distance
+      }
     }
   }
 
@@ -84,7 +88,7 @@ class Game {
 
         break;
       case 'l':
-  
+
         if (this.leftArm.rotation.z > - 1.05) this.leftArmUp = true
         else if (this.leftArm.rotation.z < -4) this.leftArmDown = true;
         break;
@@ -95,8 +99,6 @@ class Game {
           this.moonY++;
           this.moon.scale.set(this.moonSize, this.moonSize, this.moonSize);
           this.moon.position.y = this.moonY;
-          
-
         }
         break;
       case 'ArrowDown':
@@ -107,8 +109,9 @@ class Game {
           this.moon.position.y = this.moonY;
         }
         break
- 
-
+      case 'p':
+        this.pause = !this.pause;
+        break
     }
 
   }
@@ -261,7 +264,7 @@ class Game {
       if (this.supermanBB.intersectsBox(element) && element != this.collisionTemp) {
         this.collisionTemp = element;
         if (element.userData.type === 'obstacle') {
-          
+
           this.health -= 10;
           this.divHealth.value = this.health;
           this.shake = true;
@@ -396,7 +399,7 @@ class Game {
 
   checkGameOver() {
     if (this.divHealth.value < 10) {
-      alert("Game Over \npress ok to reload");
+      alert("Game Over` \npress ok to reload");
       this.divHealth.value = 10;
       window.location.reload();
     }
