@@ -3,7 +3,7 @@ window.onload = () => {
     document.body.innerHTML=
     '<button id=\'start\'>Start</button>'+
     '<br>'+
-    '<div> Select Difficulty </div><input id="difficulty" type="range" min="1" max="100" value="30" step =1></input><br>'
+    '<div> Select Difficulty </div><input id="difficulty" type="range" min="1" max="60" value="30" step =1></input><br>'
    
     document.getElementById('start').onclick = function(){ difficulty = document.getElementById('difficulty').value;;startGame()};
 };
@@ -18,7 +18,7 @@ function startGame(){
         '<div> Health </div><input id="health" type="range" min="0" max="100" value="100" disabled></input><br>'+
     '</div>'+
     '<div id="controls">'+
-        '+<div id="title">Commands</div>'+
+        '<div id="title">Commands</div>'+
         '<div>left/right arrows move superman </div>'+
         '<div>up/down arrows change moon distance </div>'+
         '<div>l/r move arms </div>'+

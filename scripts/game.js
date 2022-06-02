@@ -26,7 +26,6 @@ class Game {
   rightArm = null;
   leftArm = null;
 
-
   moonSize = 30;
   moonY = -31;
 
@@ -118,23 +117,23 @@ class Game {
 
   updateObjects() {
     //TODO separate obstacles and bonuses
+    //TOD0 remove 0 inside params
 
     this.objectsParent.position.z = this.speedZ * this.time; //move objects 
-    var count = 0;
-    this.objectsParent.traverse((child) => {
+    var count = 0;//count objects inside bounding box array 
+    this.objectsParent.traverse((child) => { //iterate over all the objects
       if (child instanceof THREE.Mesh) {
-        this.objectsParentBB[count].setFromObject(child);
-        count++;
-        const childZPos = child.position.z + this.objectsParent.position.z;
 
+        this.objectsParentBB[count].setFromObject(child);//update boundingbox
+        count++;
+
+        const childZPos = child.position.z + this.objectsParent.position.z;
         if (childZPos > 0) {
-          // reset the objects positions
-          const params = [child, 0, -this.objectsParent.position.z];
+          const params = [child, 0, -this.objectsParent.position.z]; //reset objects position (0 is temporary)
           if (child.userData.type === 'obstacle') {
-            this.objectsParentBB[count].setFromObject(child);
             this.setupObstacle(...params);
           }
-          else {
+          else {//it's a bonus
             this.setupBonus(...params);
           }
         }
@@ -142,7 +141,6 @@ class Game {
     });
 
   }
-
 
   initializeScene(scene, camera) {
 
@@ -222,7 +220,7 @@ class Game {
   }
 
   setupObstacle(obj, refXPos = 0, refZPos = 0) {
-    let scale = this.randomFloat(0.5, 0.8)
+    let scale = this.randomFloat(0.3, 0.8)
     obj.scale.set(scale, scale, scale)
     obj.position.set(
       refXPos + this.randomFloat(-3, 3),
@@ -246,7 +244,7 @@ class Game {
     const size = this.randomFloat(0.3, 0.5);
     obj.scale.set(size, size, size);
     obj.position.set(
-      refXPos + this.randomFloat(-3, -3),
+      refXPos + this.randomFloat(-3, 3),
       obj.scale.y,
       refZPos - 100 - this.randomFloat(0, 100)
     );
@@ -264,7 +262,6 @@ class Game {
       if (this.supermanBB.intersectsBox(element) && element != this.collisionTemp) {
         this.collisionTemp = element;
         if (element.userData.type === 'obstacle') {
-
           this.health -= 10;
           this.divHealth.value = this.health;
           this.shake = true;
@@ -301,7 +298,7 @@ class Game {
 
   animate() {
     this.moon.rotateX(+0.001);
-
+    
     // superman go from bottom to starting point
     if (this.supUp) {
       if (this.superman.position.y <= 0)
@@ -356,18 +353,22 @@ class Game {
 
     //fluctuate
     if (this.fluct) {
-      if (this.superman.position.y <= 0.05) {
+      if (this.superman.position.y <= 0.03) {
         this.superman.position.y += 0.002;
         this.cape.rotation.y -= 0.004;
       }
-      else this.fluct = false;
+      else {
+        this.fluct = false;
+      }
     }
     else {
-      if (this.superman.position.y >= -0.05) {
+      if (this.superman.position.y >= -0.03) {
         this.superman.position.y -= 0.002;
         this.cape.rotation.y += 0.004;
       }
-      else this.fluct = true;
+      else {
+        this.fluct = true;
+      }
     }
     //_____________________________
 
