@@ -168,7 +168,7 @@ class Game {
     light.position.set(0, 0, 10);
     scene.add(lightAmbient);
 
-    var bgTexture = new THREE.TextureLoader().load("sky_stars.jpeg");
+    var bgTexture = new THREE.TextureLoader().load("img/sky_stars.jpeg");
     bgTexture.minFilter = THREE.LinearFilter;
     scene.background = bgTexture;
 
