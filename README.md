@@ -1,5 +1,14 @@
 # Interactive Graphics Final Project
-Try it on 
+Try it on https://sapienzainteractivegraphicscourse.github.io/final-project-valerio-montagliani/
+
+Commands:
+- Left/right arrow to move Superman
+ - Up/down arrow to change the moon distance 
+ - r to raise/lower the right arm
+ - l to raise/lower the left arm
+ - p to pause the game
+ - m to speedup the rotation speed
+ 
 ## Project requirements 
 
  - You can use «basic» WebGL or advanced libraries, such as ThreeJS (http://threejs.org/) or Babylon (http://babylonjs.com/)
