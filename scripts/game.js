@@ -1,13 +1,13 @@
 
 class Game {
-  //0x08FF08
+
   KRYPTONITE_BUFF = new THREE.BoxBufferGeometry(1, 1, 1);
-  KRYPTONITE_MAT =  new THREE.MeshPhysicalMaterial({
-    transmission: .5,
+  KRYPTONITE_MAT = new THREE.MeshPhysicalMaterial({
+    transmission: 0.5,
     thickness: 1.5,
     roughness: 0.07,
-    color: 0x83f52c
-    })
+    color: 0x08FF08,
+  })
   BONUS_BUFF = new THREE.SphereBufferGeometry(1, 12, 12);
   BONUS_MAT = new THREE.MeshBasicMaterial({ color: 0xFFFF00 });
 
@@ -138,7 +138,6 @@ class Game {
   }
 
   updateObjects() {
-    //TODO separate kryptonites and bonuses
     //TOD0 remove 0 inside params
 
     this.objectsGroup.position.z = this.speedZ * this.time; //move objects 
@@ -170,13 +169,18 @@ class Game {
     const light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(0, 5, 3);
     scene.add(light);
+
     const lightAmbient = new THREE.AmbientLight(0xffffff, 1);
     lightAmbient.position.set(0, 0, 0);
     scene.add(lightAmbient);
 
-    var bgTexture = new THREE.TextureLoader().load("img/sky_stars.jpeg");
-    bgTexture.minFilter = THREE.LinearFilter;
-    scene.background = bgTexture;
+    const galaxyGeometry = new THREE.SphereGeometry(200, 200, 200);
+    const galaxyMaterial = new THREE.MeshBasicMaterial({
+      map: THREE.ImageUtils.loadTexture("img/sky_stars.jpeg"),
+      side: THREE.BackSide,
+    });
+    this.galaxyMesh = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
+    scene.add(this.galaxyMesh);
 
     this.moon = this.modelLoad('gltf/moon_scene.gltf')
     Promise.resolve(this.moon).then((data) => {
@@ -216,11 +220,9 @@ class Game {
 
     scene.add(this.objectsGroup);
 
-    for (let i = 0; i < 5; i++) {
+    let i = 0;
+    for (i = 0; i < 5; i++) {
       this.createKryptonite();
-    }
-
-    for (let i = 0; i < 5; i++) {
       this.createBonus();
     }
 
@@ -328,7 +330,7 @@ class Game {
   }
 
   animate() {
-
+    this.galaxyMesh.rotation.x += 0.0005;
     this.moon.rotateX(this.moonRotationSpeed);
 
     // superman go from bottom to starting point

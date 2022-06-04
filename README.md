@@ -1,5 +1,5 @@
 # Interactive Graphics Final Project
-Try it on https://sapienzainteractivegraphicscourse.github.io/final-project-valerio-montagliani/
+Try it on 
 ## Project requirements 
 
  - You can use «basic» WebGL or advanced libraries, such as ThreeJS (http://threejs.org/) or Babylon (http://babylonjs.com/)
@@ -53,11 +53,20 @@ The main script `main.js`  will populate the `index.html` file with an initial s
 In `game.js` is defined the class `Game` that contains all the function needed by the game.  
 The constructor initialize the scene using `initializeScene(scene, camera)`that will:
  - Create a directional light and an ambient light
- - Load a texture from an image setting it in the background
+ - Create a sphere and then apply a texture from an image to it ( galaxy )
  - Load the model of the moon and the model of superman using `modelLoad()` (uses GLTFLoader)
  - Create a bounding box for the superman model (Box3)
- - Create 5 obstacles using `createKryptonite()` and 5 bonuses using `createBonus()` (stored inside the Group `objectsGroup`)
-	 - For each obstacle and for each bonus a bounding box (Box3) will be created (then stored inside the array `objectsBB`) for the collision management.
+ - Create 5 obstacles using `createKryptonite()`  and 5 bonuses using `createBonus()` (stored inside the Group `objectsGroup`)
+	 - To better simulate the kryptonite gemstone and obtain a glass effect, I decided to as material:
+```js
+KRYPTONITE_MAT = new  THREE.MeshPhysicalMaterial({
+	transmission:  .5,
+	thickness:  1.5,
+	roughness:  0.07,
+	color:  0x83f52c
+})
+```
+- For each obstacle and for each bonus a bounding box (Box3) will be created (then stored inside the array `objectsBB`) for the collision management.
 
 The collisions between Superman and the kryptonite/bonus is managed by `checkCollisions()` where for each element of `objectParentBB` will be performed the function intersectsBox with Superman: when this function return true it means that there is a collision. If the collision is between Superman and the kryptonite the health of superman will decrease of 10, else if the collision is with a bonus, the score will be increased by 10.
 
@@ -76,8 +85,13 @@ The animation are performed inside the funcion `animate()`. There are several an
 I implemented the following interactions:
 
  - Left/right arrow to move Superman
- - Up/down arrow to change the moon distance (scale and y)
+	 - This will modify the x position of superman 
+ - Up/down arrow to change the moon distance 
+	 - This will modify the scale and the y position of the moon
  - r to raise/lower the right arm
+	 - r will trigger an animation that will lower or raise the right arm 
  - l to raise/lower the left arm
+	 - l will trigger an animation that will lower or raise the right arm 
  - p to pause the game
  - m to speedup the rotation speed
+	 - m will increase the value of the x rotation
