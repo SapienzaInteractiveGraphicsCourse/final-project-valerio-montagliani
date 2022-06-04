@@ -1,7 +1,13 @@
 
 class Game {
+  //0x08FF08
   KRYPTONITE_BUFF = new THREE.BoxBufferGeometry(1, 1, 1);
-  KRYPTONITE_MAT = new THREE.MeshBasicMaterial({ color: 0x08FF08 });
+  KRYPTONITE_MAT =  new THREE.MeshPhysicalMaterial({
+    transmission: .5,
+    thickness: 1.5,
+    roughness: 0.07,
+    color: 0x83f52c
+    })
   BONUS_BUFF = new THREE.SphereBufferGeometry(1, 12, 12);
   BONUS_MAT = new THREE.MeshBasicMaterial({ color: 0xFFFF00 });
 
@@ -162,10 +168,10 @@ class Game {
   initializeScene(scene, camera) {
 
     const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(0, 0, 2);
+    light.position.set(0, 5, 3);
     scene.add(light);
     const lightAmbient = new THREE.AmbientLight(0xffffff, 1);
-    light.position.set(0, 0, 10);
+    lightAmbient.position.set(0, 0, 0);
     scene.add(lightAmbient);
 
     var bgTexture = new THREE.TextureLoader().load("img/sky_stars.jpeg");
