@@ -3,6 +3,8 @@
 
 Try it on https://sapienzainteractivegraphicscourse.github.io/final-project-valerio-montagliani/
 
+Please note that with one of the last update of Firefox (linux) I'm having problems with three js. Please test it using Chrome or Safari.
+
 Commands:
 
 - Left/right arrow to move Superman
