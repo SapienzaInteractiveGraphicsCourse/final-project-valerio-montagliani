@@ -1,9 +1,11 @@
 
-# Interactive Graphics Final Project
+
+# Interactive Graphics Final Project - SuperBí
+Valerio Montagliani 1759418
 
 Try it on https://sapienzainteractivegraphicscourse.github.io/final-project-valerio-montagliani/
 
-Please note that with one of the last update of Firefox (linux) I'm having problems with three js. Please test it using Chrome or Safari.
+Please note that with one of the last update of Firefox (linux) I started having problems with the load of the game. So, if there are problems, please test it using Chrome or Safari.
 
 Commands:
 
