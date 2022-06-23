@@ -3,8 +3,6 @@
 
 Try it on https://sapienzainteractivegraphicscourse.github.io/final-project-valerio-montagliani/
 
-  
-
 Commands:
 
 - Left/right arrow to move Superman
@@ -59,44 +57,28 @@ In this project I used `three.js`, a cross-browser JavaScript library and applic
 ### Files
 
 ```
-
 Main folder
 
 │ README.md
-
 │ index.html //main html file
-
 └───gltf //folder containing the models
-
-│ │ moon_scene.bin
-
-│ │ moon_scene.gltf
-
-│ │ superman_scene.bin0
-
-│ │ superman_scene.bin
+	│ │ moon_scene.bin
+	│ │ moon_scene.gltf
+	│ │ superman_scene.bin0
+	│ │ superman_scene.bin
 └───img //folder containing images
-│ │ sky_stars.jpeg //image used as texture
-│ │ background.jpg //start screen
-│ │ start_button.svg 
-│ │ select_difficulty.svg
-
+	│ │ sky_stars.jpeg //image used as texture
+	│ │ background.jpg //start screen
+	│ │ start_button.svg 
+	│ │ select_difficulty.svg
 └───scripts //folder containing the javascript files
-
-│ │ game.js //script to manage the game
-
-│ │ main.js //main script
-
-│ │ three.js //file containing the Three.js library
-
-│ │ GLTFLoader.js //file containing the loader needed to load models
-
+	│ │ game.js //script to manage the game
+	│ │ main.js //main script
+	│ │ three.js //file containing the Three.js library
+	│ │ GLTFLoader.js //file containing the loader needed to load models
 └───styles
-
-│ │ index.css //style file
-
+	│ │ index.css //style file
 ```
-
 ### main.js
 
 The main script `main.js` will populate the `index.html` file with an initial screen where the user can select the difficulty of the game (the speed of the kryptonite) and then start the game. Once the user press start, the function `startGame()` will be executed, creating a `scene`, a `camera`, a `difficulty` value (that are passed to the constructor of the Game class) and a `renderer` (used in the animate loop).
@@ -120,22 +102,18 @@ The constructor initialize the scene using `initializeScene(scene, camera)`that 
 - To better simulate the kryptonite gemstone and obtain a glass effect, I decided to as material:
 
 ```js
-
 KRYPTONITE_MAT = new  THREE.MeshPhysicalMaterial({
 	transmission:  .5,
 	thickness:  1.5,
 	roughness:  0.07,
 	color:  0x83f52c
 })
-
 ```
-
 - For each obstacle and for each bonus a bounding box (Box3) will be created (then stored inside the array `objectsBB`) for the collision management.
 
 The collisions between Superman and the kryptonite/bonus is managed by `checkCollisions()` where for each element of `objectParentBB` will be performed the function intersectsBox with Superman: when this function returns true means that there is a collision. If the collision is between Superman and the kryptonite the health of superman will decrease of 10, else if the collision between Superman and a bonus, the score will be increased by 10.
 
 The objects' moovement is managed by the function `updateObjects()` where the group's position is updated by the selected difficulty times the current time. When the objects exceed the Superman position (object z position > 0) the function reset their z and x position (calling the set functions), simulating the spawn of a new object.
-
 
 The animation are performed inside the funcion `animate()`. There are several animations:
 
@@ -146,7 +124,6 @@ The animation are performed inside the funcion `animate()`. There are several an
 - Superman's cape fluctuate
 - Shake animation when Superman hits kryptonite
 
-  
 
 ## Description of the implemented interactions
 

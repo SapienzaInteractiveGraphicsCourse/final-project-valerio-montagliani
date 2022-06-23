@@ -14,7 +14,7 @@ function startGame(){
         '<div class="divider"></div>'+
         '<div id="score">Score: </div>'+
         '<div id="distance">Distance: </div>'+
-        '<div> Health: </div><input id="health" type="range" min="0" max="100" value="100" disabled></input><br>'+
+        '<div> Health: </div><input id="health"  type="range" min="0" max="100" value="100" disabled></input><br>'+
     '</div>'+
     '<div id="controls">'+
         '<div id="title">Commands</div>'+

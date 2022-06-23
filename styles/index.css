@@ -7,22 +7,25 @@ html {
 #info {
 	position: absolute;
 	top: 10%;
-    right: 40%;
-	width: 100%;
+    left: 10%;
+	width: fit-content;
+	height: fit-content;
 	text-align: center;
 	z-index: 100;
 	display:block;
 	color: white;
+	background-color: black;
 }
 #controls {
 	position: absolute;
+	width: fit-content;
+	height: fit-content;
 	top: 10%;
-    left: 30%;
-	width: 100%;
+    left: 40%;
 	text-align: center;
-	z-index: 100;
 	display:block;
 	color: white;
+	background-color: black;
 }
 
 #start{
@@ -85,3 +88,9 @@ html {
 	background: #04AA6D;
 	cursor: pointer;
   }
+
+
+  #info #health:focus{
+	outline: none;
+  }
+  
