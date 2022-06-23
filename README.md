@@ -4,11 +4,11 @@
 Valerio Montagliani 1759418
 
 Try it on https://sapienzainteractivegraphicscourse.github.io/final-project-valerio-montagliani/
+Select the difficulty (bottom-left of the screen) then press START to play the game
 
 Please note that with one of the last update of Firefox (linux) I started having problems with the load of the game. So, if there are problems, please test it using Chrome or Safari.
 
 Commands:
-
 - Left/right arrow to move Superman
 - Up/down arrow to change the moon distance
 - r to raise/lower the right arm
